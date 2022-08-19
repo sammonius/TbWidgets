@@ -1,0 +1,21 @@
+    CHANGELOG:
+------------------
+This file outlines the changes made to the original
+FLWM code. Following that part is a timeline of changes
+made after the initial release (aka an actual changelog)
+
+
+CHANGES TO FLWM:
+----------
+The new file created for handling toolbar widgets is
+called "tbwBackend.C". This is where all the exitement
+happens.
+
+First of all, at around line 330 of "main.C", there's
+a block called "find all the windows and create a frame
+for each." FLWM would create a Frame object for each
+window without storing it, which would need to be changed
+so that apps could call "getWindowTb()". This was changed
+by creating a list of Frames in tbwBackend.C and having
+the Frame constructor/destructor add and remove the frame
+from the list.

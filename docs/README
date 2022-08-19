@@ -1,0 +1,2 @@
+Run "doxygen doxconf" in the repo folder to generate docs.
+Doxygen must be installed to do this.

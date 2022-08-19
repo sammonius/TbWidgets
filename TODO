@@ -1,0 +1,7 @@
+   TODO:
+------------
+ > Move to GNU Autotools for cross-platform support (currently just a Linux makefile)
+
+ > Add a hideable container widget, and a stack widget that stores a list of container widgets
+ 
+ 
