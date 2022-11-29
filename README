@@ -1,12 +1,8 @@
 TbWidgets
 --------------
-TbWidgets is a system that allows clients to
+TbWidgets is a library that allows clients to
 add graphical widgets through the window manager (or compositor).
 It's intended to be an alternative to CSD that makes both "modern"
 and "traditional" desktop users happy.
 
-It can be compiled with "make" and installed with "sudo make install".
-An example implementation based off of FLWM is planned. It's called
-"FLTB" in the examples folder, but it's currently incomplete.
-
-[TbWidgets has no Licence at the moment]
+zlib/libpng licence
