@@ -1,185 +1,101 @@
-#define TBWIDGETS_NO_FUNC_DECLS
 #include "tbwidgets.h"
 #include <dlfcn.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
-typedef void(*TbFunc_t)();
+enum tbw_operation {
+	newTbSeparator_f = 0,
+	newTbLabel_f = 1,
+	newTbIcon_f = 2,
+	newTbButton_f = 3,
+	newTbIconButton_f = 4,
+	newTbCheckBox_f = 5,
+	newTbTextInput_f = 6,
+	newTbSlider_f = 7,
+	newTbComboBox_f = 8,
+	newTbListView_f = 9,
+	newTbButtonGroup_f = 10,
+	newTbMenu_f = 11,
+	addTbSpacer_f = 12,
+	addTbSeparator_f = 13,
+	addTbLabel,addTbIcon_f = 14,
+	addTbButton_f = 15,
+	addTbIconButton_f = 16,
+	addTbCheckBox_f = 17,
+	addTbTextInput_f = 18,
+	addTbSlider_f = 19,
+	addTbComboBox_f = 20,
+	addTbListView_f = 21,
+	addTbButtonGroup_f = 22,
+	addTbMenu_f = 23,
+	TbWidget_setWidth_f = 24,
+	TbWidget_minWidth_f = 25,
+	TbSeparator_setFull_f = 26,
+	TbLabel_setText_f = 27,
+	TbLabel_setItalic_f = 28,
+	TbLabel_setBold_f = 29,
+	TbLabel_setUnderlined_f = 30,
+	TbLabel_setStrikeThrough_f = 31,
+	TbIcon_load_f = 32,
+	TbButton_setLabel_f = 33,
+	TbButton_setIcon_f = 34,
+	TbButton_setDisabled_f = 35,
+	TbButton_setLink_f = 36,
+	TbButton_setToggle_f = 37,
+	TbButton_setToggled_f = 38,
+	TbButton_setIconOnTheRigh_f = 39,
+	TbIconButton_setToggle_f = 40,
+	TbIconButton_setToggled_f = 41,
+	TbCheckBox_setLabel_f = 42,
+	TbCheckBox_setDisabled_f = 43,
+	TbCheckBox_setChecked_f = 44,
+	TbTextInput_setText_f = 45,
+	TbTextInput_setWarning_f = 46,
+	TbTextInput_setDisabled_f = 47,
+	TbTextInput_setPassword_f = 48,
+	TbTextInput_setLocked_f = 49,
+	TbTextInput_setResizable_f = 50,
+	TbSlider_setVal_f = 51,
+	TbSlider_setMin_f = 52,
+	TbSlider_setMax_f = 53,
+	TbSlider_setStops_f = 54,
+	TbSlider_setDisabled_f = 55,
+	TbComboBox_setVal_f = 56,
+	TbComboBox_addItem_f = 57,
+	TbComboBox_removeItem_f = 58,
+	TbComboBox_addItemAtLocati_f = 59,
+	TbComboBox_removeItemAtLocation_f = 60,
+	TbComboBox_setDisabled_f = 61,
+	TbListView_setVal_f = 62,
+	TbListView_addItem_f = 63,
+	TbListView_removeItem_f = 64,
+	TbListView_addItemAtLocation_f = 65,
+	TbListView_removeItemAtLocation_f = 66,
+	TbButtonGroup_addItem_f = 67,
+	TbButtonGroup_removeItem_f = 68,
+	TbButtonGroup_addItemAtLocation_f = 69,
+	TbButtonGroup_removeItemAtLocation_f = 70,
+	TbMenu_addItem_f = 71,
+	TbMenu_removeItem_f = 72,
+	TbMenu_addItemAtLocation_f = 73,
+	TbMenu_removeItemAtLocation_f = 74;
+};
 
-TbFunc_t getWindowTb,
-newTbSpacer,
-newTbSeparator,
-newTbLabel,
-newTbIcon,
-newTbButton,
-newTbIconButton,
-newTbCheckBox,
-newTbTextInput,
-newTbSlider,
-newTbComboBox,
-newTbListView,
-newTbButtonGroup,
-newTbMenu,
-addTbSpacer,
-addTbSeparator,
-addTbLabel,addTbIcon,
-addTbButton,
-addTbIconButton,
-addTbCheckBox,
-addTbTextInput,
-addTbSlider,
-addTbComboBox,
-addTbListView,
-addTbButtonGroup,
-addTbMenu,
-TbWidget_setWidth,
-TbWidget_minWidth,
-TbSeparator_setFull,
-TbSeparator_setFull,
-TbLabel_setText,
-TbLabel_setItalic,
-TbLabel_setBold,
-TbLabel_setUnderlined,
-TbLabel_setStrikeThrough,
-TbIcon_load,
-TbButton_setLabel,
-TbButton_setIcon,
-TbButton_setDisabled,
-TbButton_setLink,
-TbButton_setToggle,
-TbButton_setToggled,
-TbButton_setIconOnTheRight,
-TbIconButton_setToggle,
-TbIconButton_setToggled,
-TbCheckBox_setLabel,
-TbCheckBox_setDisabled,
-TbCheckBox_setChecked,
-TbTextInput_setText,
-TbTextInput_setWarning,
-TbTextInput_setDisabled,
-TbTextInput_setPassword,
-TbTextInput_setLocked,
-TbTextInput_setResizable,
-TbSlider_setVal,
-TbSlider_setMin,TbSlider_setMax,
-TbSlider_setStops,
-TbSlider_setDisabled,
-TbComboBox_setVal,
-TbComboBox_addItem,
-TbComboBox_removeItem,
-TbComboBox_addItemAtLocation,
-TbComboBox_removeItemAtLocation,
-TbComboBox_setDisabled,
-TbListView_setVal,
-TbListView_addItem,
-TbListView_removeItem,
-TbListView_addItemAtLocation,
-TbListView_removeItemAtLocation,
-TbButtonGroup_addItem,
-TbButtonGroup_removeItem,
-TbButtonGroup_addItemAtLocation,
-TbButtonGroup_removeItemAtLocation,
-TbMenu_addItem,
-TbMenu_removeItem,
-TbMenu_addItemAtLocation,
-TbMenu_removeItemAtLocation;
+#define MAX_BACKENDS 999
+static int (*backends)(enum tbw_operation o)[MAX_BACKENDS];
 
-void *backendLib;
-
-static char backendLibName[99];
-
-void getTbBackendLib(char *dest){
-	strcpy(dest, backendLibName);
+bool TbRemoveBackend(int (backend_func*)(enum tbw_operation o)){
+	for(int i = 0; backends[i] != NULL && i < 999; i++)
+		if(backends[i] == backend_func) //TODO
+	return false;
 }
 
-int setTbBackendLib(char *newLibPath){
-	if(newLibPath == NULL || newLibPath[0] == '\0') return false;
-	// RTLD_NOW is faster since practically all functions in the library will be used.
-	if(!(backendLib = dlopen(newLibPath, RTLD_NOW))) return false; 
-	
-	/* Checks if the requested backend has function NAME.
-	 * If it doesn't, revert to previous backend. */
-	#define LOAD_BACKEND_FUNC(NAME) if((NAME = dlsym(backendLib, #NAME)) == NULL){return setTbBackendLib(backendLibName);}
-	
-	LOAD_BACKEND_FUNC(getWindowTb)
-	LOAD_BACKEND_FUNC(newTbSpacer)
-	LOAD_BACKEND_FUNC(newTbSeparator)
-	LOAD_BACKEND_FUNC(newTbLabel)
-	LOAD_BACKEND_FUNC(newTbIcon)
-	LOAD_BACKEND_FUNC(newTbButton)
-	LOAD_BACKEND_FUNC(newTbIconButton)
-	LOAD_BACKEND_FUNC(newTbCheckBox)
-	LOAD_BACKEND_FUNC(newTbTextInput)
-	LOAD_BACKEND_FUNC(newTbSlider)
-	LOAD_BACKEND_FUNC(newTbComboBox)
-	LOAD_BACKEND_FUNC(newTbListView)
-	LOAD_BACKEND_FUNC(newTbButtonGroup)
-	LOAD_BACKEND_FUNC(newTbMenu)
-	LOAD_BACKEND_FUNC(addTbSpacer)
-	LOAD_BACKEND_FUNC(addTbSeparator)
-	LOAD_BACKEND_FUNC(addTbLabel)
-	LOAD_BACKEND_FUNC(addTbIcon)
-	LOAD_BACKEND_FUNC(addTbButton)
-	LOAD_BACKEND_FUNC(addTbIconButton)
-	LOAD_BACKEND_FUNC(addTbCheckBox)
-	LOAD_BACKEND_FUNC(addTbTextInput)
-	LOAD_BACKEND_FUNC(addTbSlider)
-	LOAD_BACKEND_FUNC(addTbComboBox)
-	LOAD_BACKEND_FUNC(addTbListView)
-	LOAD_BACKEND_FUNC(addTbButtonGroup)
-	LOAD_BACKEND_FUNC(addTbMenu)
-	LOAD_BACKEND_FUNC(TbWidget_setWidth)
-	LOAD_BACKEND_FUNC(TbWidget_minWidth)
-	LOAD_BACKEND_FUNC(TbSeparator_setFull)
-	LOAD_BACKEND_FUNC(TbSeparator_setFull)
-	LOAD_BACKEND_FUNC(TbLabel_setText)
-	LOAD_BACKEND_FUNC(TbLabel_setItalic)
-	LOAD_BACKEND_FUNC(TbLabel_setBold)
-	LOAD_BACKEND_FUNC(TbLabel_setUnderlined)
-	LOAD_BACKEND_FUNC(TbLabel_setStrikeThrough)
-	LOAD_BACKEND_FUNC(TbIcon_load)
-	LOAD_BACKEND_FUNC(TbButton_setLabel)
-	LOAD_BACKEND_FUNC(TbButton_setIcon)
-	LOAD_BACKEND_FUNC(TbButton_setDisabled)
-	LOAD_BACKEND_FUNC(TbButton_setLink)
-	LOAD_BACKEND_FUNC(TbButton_setToggle)
-	LOAD_BACKEND_FUNC(TbButton_setToggled)
-	LOAD_BACKEND_FUNC(TbButton_setIconOnTheRight)
-	LOAD_BACKEND_FUNC(TbIconButton_setToggle)
-	LOAD_BACKEND_FUNC(TbIconButton_setToggled)
-	LOAD_BACKEND_FUNC(TbCheckBox_setLabel)
-	LOAD_BACKEND_FUNC(TbCheckBox_setDisabled)
-	LOAD_BACKEND_FUNC(TbCheckBox_setChecked)
-	LOAD_BACKEND_FUNC(TbTextInput_setText)
-	LOAD_BACKEND_FUNC(TbTextInput_setWarning)
-	LOAD_BACKEND_FUNC(TbTextInput_setDisabled)
-	LOAD_BACKEND_FUNC(TbTextInput_setPassword)
-	LOAD_BACKEND_FUNC(TbTextInput_setLocked)
-	LOAD_BACKEND_FUNC(TbTextInput_setResizable)
-	LOAD_BACKEND_FUNC(TbSlider_setVal)
-	LOAD_BACKEND_FUNC(TbSlider_setMin)
-	LOAD_BACKEND_FUNC(TbSlider_setMax)
-	LOAD_BACKEND_FUNC(TbSlider_setStops)
-	LOAD_BACKEND_FUNC(TbSlider_setDisabled)
-	LOAD_BACKEND_FUNC(TbComboBox_addItem)
-	LOAD_BACKEND_FUNC(TbComboBox_removeItem)
-	LOAD_BACKEND_FUNC(TbComboBox_addItemAtLocation)
-	LOAD_BACKEND_FUNC(TbComboBox_removeItemAtLocation)
-	LOAD_BACKEND_FUNC(TbComboBox_setDisabled)
-	LOAD_BACKEND_FUNC(TbListView_addItem)
-	LOAD_BACKEND_FUNC(TbListView_removeItem)
-	LOAD_BACKEND_FUNC(TbListView_addItemAtLocation)
-	LOAD_BACKEND_FUNC(TbListView_removeItemAtLocation)
-	LOAD_BACKEND_FUNC(TbButtonGroup_addItem)
-	LOAD_BACKEND_FUNC(TbButtonGroup_removeItem)
-	LOAD_BACKEND_FUNC(TbButtonGroup_addItemAtLocation)
-	LOAD_BACKEND_FUNC(TbButtonGroup_removeItemAtLocation)
-	LOAD_BACKEND_FUNC(TbMenu_addItem)
-	LOAD_BACKEND_FUNC(TbMenu_removeItem)
-	LOAD_BACKEND_FUNC(TbMenu_addItemAtLocation)
-	LOAD_BACKEND_FUNC(TbMenu_removeItemAtLocation)
-	
-	strcpy(backendLibName, newLibPath);
-	return true;
+bool TbAddBackend(int (backend_func*)(enum tbw_operation o)){
+
+}
+
+int TbCallOperation(enum tbw_operation o, ...){
+#if __GNUC__ > 4 // fancy optimization
+
 }

@@ -5,4 +5,11 @@ add graphical widgets through the window manager (or compositor).
 It's intended to be an alternative to CSD that makes both "modern"
 and "traditional" desktop users happy.
 
+The way it works is that an app sends instructions to the WM
+for what to draw on its titlebar (and which window to draw it
+on, obviously). On Mutter it could look exactly like a GTK
+headerbar, but it would also look natural on other WMs at
+the same time. Keep in mind that no WM has actually implemented
+this yet, and it's a work in progress.
+
 zlib/libpng licence

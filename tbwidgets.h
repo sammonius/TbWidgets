@@ -144,9 +144,6 @@ enum TbWindowType {TbXLibWindow, TbXCBWindow, TbWlSurfaceWindow};
 extern "C" {
 #endif
 
-/* This macro prevents the "redeclared as different kind of symbol" error
- * when compiling [tbwidgets.c] since it is defined in that file. */
-#ifndef TBWIDGETS_NO_FUNC_DECLS
 
 Tb_t *getWindowTb(enum TbWindowType winType, void *win, bool empty);
 
@@ -244,10 +241,7 @@ void TbMenu_removeItem(TbMenu_t *menu, TbButton_t *button);
 void TbMenu_addItemAtLocation(TbMenu_t *menu, TbButton_t *button, unsigned int spot);
 void TbMenu_removeItemAtLocation(TbMenu_t *menu, unsigned int spot);
 
-#endif /* TBWIDGETS_NO_FUNC_DECLS */
 
-void getTbBackendLib(char *dest);
-int setTbBackendLib(char *newLibPath);
 
 
 #ifdef __cplusplus
