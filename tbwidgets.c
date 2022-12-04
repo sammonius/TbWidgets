@@ -83,19 +83,36 @@ enum tbw_operation {
 };
 
 #define MAX_BACKENDS 999
+static int backend_count = 0;
 static int (*backends)(enum tbw_operation o)[MAX_BACKENDS];
 
 bool TbRemoveBackend(int (backend_func*)(enum tbw_operation o)){
-	for(int i = 0; backends[i] != NULL && i < 999; i++)
-		if(backends[i] == backend_func) //TODO
-	return false;
+	if(!backend_func) return false;
+	int i = 0;
+	while(i < backend_count){
+		if(backends[i] == backend_func){
+			backends[i] = 0;
+			break;
+		}
+	}
+	if(i == backend_count) return false;
+	i++
+	while(i < backend_count)
+		backends[i-1] = backends[i];
+	return true
 }
 
 bool TbAddBackend(int (backend_func*)(enum tbw_operation o)){
-
+	if(!backend_func || backend_count == MAX_BACKENDS) return false;
+	backends[backend_count] = backend_func;
+	backend_count++;
+	return true
 }
 
 int TbCallOperation(enum tbw_operation o, ...){
 #if __GNUC__ > 4 // fancy optimization
 
+#else
+
+#endif
 }
